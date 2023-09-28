@@ -9,8 +9,8 @@ import RuleDialog from './RuleDialog/RuleDialog';
 
 
 const columns = [
-    { id: 'rule', label: 'Rule', minWidth: 170 },
-    { id: 'description', label: 'Description', minWidth: 100 },
+    { id: 'rule', label: 'Rule', width: 400 },
+    { id: 'description', label: 'Description'},
   ];
   
 function createData(rule, description, population, size) {
@@ -36,7 +36,7 @@ const rows = [
     createData('Brazil', 'BR', 210147125, 8515767),
 ];
   
-export default function RuleTable({ dialogVisible, setDialogVisible }) {
+export default function RuleTable({ dialogVisible, setDialogVisible, searchText }) {
  
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -70,7 +70,7 @@ export default function RuleTable({ dialogVisible, setDialogVisible }) {
               <TableCell
                 key={column.id}
                 align={column.align}
-                style={{ minWidth: column.minWidth }}
+                style={{ width: column.width }}
               >
                 {column.label}
               </TableCell>
@@ -79,6 +79,9 @@ export default function RuleTable({ dialogVisible, setDialogVisible }) {
         </TableHead>
         <TableBody>
           {rows
+            .filter((row) => {
+              return !searchText || row.rule.toLowerCase().indexOf(searchText) >= 0 || row.description.toLowerCase().indexOf(searchText) >= 0;
+            })
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => {
               return (

@@ -10,10 +10,12 @@ function App() {
     setDialogVisible(true);
   };
   
+  const [searchText, setSearchText] = React.useState();
+
   return (
    <div className='app'>    
-    <RuleControllers onNewRule={handleNewRule}/>
-    <RuleTable dialogVisible={dialogVisible} setDialogVisible={setDialogVisible} />
+    <RuleControllers onNewRule={handleNewRule} onSearchTextChange={setSearchText}/>
+    <RuleTable dialogVisible={dialogVisible} setDialogVisible={setDialogVisible} searchText={searchText}/>
    </div>
   );
 }
