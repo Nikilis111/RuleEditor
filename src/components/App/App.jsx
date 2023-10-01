@@ -5,9 +5,9 @@ import RuleTable from "../RuleTable/RuleTable";
 import "./App.scss";
 
 function App() {
-  const [dialogVisible, setDialogVisible] = React.useState(false);
+  const [dialogVisible, setDialogVisible] = React.useState(null);
   const handleNewRule = () => {
-    setDialogVisible(true);
+    setDialogVisible({});
   };
   
   const [searchText, setSearchText] = React.useState();

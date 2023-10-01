@@ -1,3 +1,9 @@
 .rule-dialog {
-    
+    .action-buttons {
+        position: relative;
+        .delete-button {
+            position: absolute;
+            left: 8px;
+        }
+    }
 }

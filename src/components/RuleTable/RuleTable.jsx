@@ -12,13 +12,15 @@ const columns = [
     { id: 'rule', label: 'Rule', width: 400 },
     { id: 'description', label: 'Description'},
   ];
-  
+
+let id = 0;
 function createData(rule, description, population, size) {
     const density = population / size;
-    return { rule, description, population, size, density };
+    id = id + 1;
+    return { id, rule, description, population, size, density };
 }
   
-const rows = [
+const initialRows = [
     createData('India', 'IN', 1324171354, 3287263),
     createData('China', 'CN', 1403500365, 9596961),
     createData('Italy', 'IT', 60483973, 301340),
@@ -37,16 +39,18 @@ const rows = [
 ];
   
 export default function RuleTable({ dialogVisible, setDialogVisible, searchText }) {
- 
+
+
     const [page, setPage] = React.useState(0);
+    const [rows, setRows] = React.useState(initialRows);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const handleClick = (event) => {
-      setDialogVisible(true);
+    const handleClick = (rule) => {
+      setDialogVisible(rule);
     };
 
     const handleClose = () => {
-      setDialogVisible(false);
+      setDialogVisible(null);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -58,12 +62,27 @@ export default function RuleTable({ dialogVisible, setDialogVisible, searchText 
         setPage(0);
     };
 
-
+    const handleDelete = (rule) => {
+      const newRows = rows.filter((row) => row.id != rule.id);
+      setRows(newRows);
+    };
     
+    const handleSave = (rule) => {
+  
+      const newRows = rule.id ?
+       rows.map((row) => row.id == rule.id ? rule : row) : 
+       [...rows, {
+        id: id++,
+        rule: rule.rule,
+        description: rule.description
+      }];
+
+      setRows(newRows);
+    };
     
     return (
       <Table stickyHeader aria-label="sticky table" className='rule-table'>
-        {dialogVisible && <RuleDialog onClose={handleClose} />}
+        {dialogVisible && <RuleDialog onClose={handleClose} onDelete={handleDelete} onSave={handleSave} rule={dialogVisible}/>}
         <TableHead>
           <TableRow>
             {columns.map((column) => (
@@ -82,10 +101,10 @@ export default function RuleTable({ dialogVisible, setDialogVisible, searchText 
             .filter((row) => {
               return !searchText || row.rule.toLowerCase().indexOf(searchText) >= 0 || row.description.toLowerCase().indexOf(searchText) >= 0;
             })
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            //.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((row) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.description} onClick={handleClick}>
+                <TableRow hover role="checkbox" tabIndex={-1} key={row.description} onClick={() => handleClick(row)}>
                   {columns.map((column) => {
                     const value = row[column.id];
                     return (
