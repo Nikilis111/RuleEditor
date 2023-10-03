@@ -1,9 +1,42 @@
 .rule-dialog {
+    display: flex;
+    flex-direction: column;
+    .dialog-content {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 0;
+    }
     .action-buttons {
+        padding: 24px;
         position: relative;
+        button {
+            margin-left: 24px;
+
+        }
         .delete-button {
             position: absolute;
-            left: 8px;
+            left: 0px;
+        }
+    
+    }
+    .conditions-and-actions {
+        display: grid;
+        grid-template-columns: 50% 24px 50%;
+        justify-content: space-between;
+        padding-top: 24px;
+        padding-right: 24px;
+        height: 100%;
+    }
+    .rule-and-description {
+        display: grid;
+        grid-template-columns: 30% 24px 70%;
+        justify-content: space-between; 
+        padding-right: 24px;
+        #rule {
+        
+        }
+        #description{
+            
         }
     }
 }

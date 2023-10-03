@@ -9,7 +9,8 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-
+import Conditions from './Conditions/Conditions.jsx'
+import Actions from './Actions/Actions.jsx'
 function RuleDialog({ onClose, onSave, onDelete, rule }) {
   
   const [activeRule, setActiveRule] = React.useState(rule);
@@ -57,35 +58,44 @@ function RuleDialog({ onClose, onSave, onDelete, rule }) {
   }
 
   return (
-    <Dialog open={true} onClose={handleClose} className='rule-dialog'>
-      <DialogTitle>Subscribe</DialogTitle>
-      <DialogContent>
-        <TextField
-          autoFocus
-          margin="dense"
-          id="name"
-          label="Rule"
-          type="text"
-          fullWidth
-          variant="standard"
-          value={activeRule.rule}
-          onChange={handleRuleChange}
-        />
-        <TextField
-          margin="dense"
-          id="name"
-          label="Description"
-          type="text"
-          fullWidth
-          variant="standard"
-          value={activeRule.description}
-          onChange={handleDescriptionChange}
-        />
+    <Dialog open={true} onClose={handleClose} className='rule-dialog' fullScreen>
+      <DialogTitle>{rule.rule ? "Edit rule" : "New rule"}</DialogTitle>
+      <DialogContent className='dialog-content' >
+        <div className='rule-and-description'>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="rule"
+            label="Name"
+            type="text"
+            fullWidth
+            
+            value={activeRule.rule}
+            onChange={handleRuleChange}
+          />
+          <span></span>
+          <TextField
+            margin="dense"
+            id="description"
+            label="Description"
+            type="text"
+            fullWidth
+            
+            value={activeRule.description}
+            onChange={handleDescriptionChange}
+          />
+        </div>
+        <div className='conditions-and-actions'>
+          <Conditions/>
+          <span></span>
+          <Actions/>
+        </div>
       </DialogContent>
+
       <DialogActions className='action-buttons'>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleSave}>Save</Button>
-        {rule.rule && <Button onClick={handleClickOpen} className='delete-button' color="error">Delete</Button>}
+        <Button size="large" variant="outlined" onClick={handleClose}>Cancel</Button>
+        <Button size="large" variant="contained" onClick={handleSave}>Save</Button>
+        {rule.rule && <Button onClick={handleClickOpen} size="large" variant="outlined" className='delete-button' color="error">Delete</Button>}
         <Dialog
           fullScreen={fullScreen}
           open={open}
